@@ -9,7 +9,7 @@ public class CubeColor : MonoBehaviour
         
         
     */
-    public int selectedcube = -1;
+    public int selectedCube = -1;
     private int dayoftheweek;
 
     // Use this for initialization
@@ -22,31 +22,54 @@ public class CubeColor : MonoBehaviour
     {
         ColorData cols = new ColorData();
 
-        for (int i = 0; i < 5; i++) {
+        //Searches for all cubes tagged with "cube" and adds them to an array
+        //The array will be used to go through all the cubes in the scene
+        GameObject [] allCubes;
+        allCubes = GameObject.FindGameObjectsWithTag("cube");
+
+        for (int i = 0; allCubes.Length > i ; i++) {
             GameObject o = GameObject.Find("Cube" + i);
-            o.GetComponent<Renderer>().material.color = cols.GetAColorToUse(i);
+            if (allCubes[1] == o )
+            {
+                o.GetComponent<Renderer>().material.color = cols.GetAColorToUse(i);
+                Debug.Log(o);
+            }
         }
 
         if (Input.GetButtonDown("Jump"))
             set_scale_of_cubes();
     }
 
+
+    //the comparison needs to be changed to be checked against length of allCubes array
     private void set_scale_of_cubes()
     {
         GameObject o;
-        if (selectedcube > -1)
+        
+        if (selectedCube > -1 && selectedCube < 5)
         {
-            o = GameObject.Find("Cube" + selectedcube);
+          
+            o = GameObject.Find("Cube" + selectedCube);
             o.transform.localScale = new Vector3(1, 1, 1);
+
         }
-        selectedcube++;
-        o = GameObject.Find("Cube" + selectedcube);
+
+        if (selectedCube < 5)
+        {
+            selectedCube++;
+        }
+        else selectedCube = 0;
+
+        o = GameObject.Find("Cube" + selectedCube);
+      
         o.transform.localScale = new Vector3(1, 2, 1);
+       
+        Debug.Log(o);
     }
 
     public float yOfCube(int cubeNumber)
     {
-        GameObject ob = GameObject.Find("Cube" + selectedcube);
+        GameObject ob = GameObject.Find("Cube" + selectedCube);
         return ob.transform.localScale.y;
     }
 }
